@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>知識矩陣 | 科技版錯題本</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+    
+    body, html { background-color: #020617; color: #cffafe; font-family: 'Noto Sans TC', sans-serif; }
+    ::selection { background: rgba(34, 211, 238, 0.4); color: #fff; }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: rgba(2, 6, 23, 0.8); }
+    ::-webkit-scrollbar-thumb { background: #0891b2; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #22d3ee; box-shadow: 0 0 10px #22d3ee; }
+    
+    .tech-bg {
+      background-color: #020617;
+      background-image: 
+        linear-gradient(rgba(34, 211, 238, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34, 211, 238, 0.05) 1px, transparent 1px);
+      background-size: 30px 30px;
+      background-position: center center;
+    }
+    
+    .cyber-glass { 
+      background: rgba(15, 23, 42, 0.75); 
+      backdrop-filter: blur(16px); 
+      -webkit-backdrop-filter: blur(16px); 
+      border: 1px solid rgba(34, 211, 238, 0.2); 
+      box-shadow: inset 0 0 20px rgba(34, 211, 238, 0.03), 0 10px 30px -10px rgba(0,0,0,0.8); 
+    }
+    
+    .cyber-card { 
+      background: rgba(30, 41, 59, 0.5); 
+      backdrop-filter: blur(16px); 
+      -webkit-backdrop-filter: blur(16px); 
+      border: 1px solid rgba(8, 145, 178, 0.3); 
+      box-shadow: inset 0 0 10px rgba(34, 211, 238, 0.02), 0 4px 15px rgba(0,0,0,0.5); 
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+      border-radius: 16px;
+    }
+    .cyber-card:hover { 
+      border-color: rgba(34, 211, 238, 0.5); 
+      box-shadow: inset 0 0 20px rgba(34, 211, 238, 0.05), 0 0 15px rgba(34, 211, 238, 0.15); 
+      transform: translateY(-2px);
+    }
+    
+    .cyber-input { 
+      background: rgba(2, 6, 23, 0.6); 
+      border: 1px solid rgba(71, 85, 105, 0.8); 
+      color: #ecfeff; 
+      transition: all 0.3s; 
+      border-radius: 12px;
+    }
+    .cyber-input:focus { 
+      border-color: #22d3ee; 
+      box-shadow: 0 0 12px rgba(34, 211, 238, 0.2); 
+      outline: none; 
+    }
+    
+    .cyber-btn { 
+      background: rgba(8, 145, 178, 0.15); 
+      border: 1px solid rgba(34, 211, 238, 0.4); 
+      color: #67e8f9; 
+      transition: all 0.3s; 
+      font-weight: 500; 
+      border-radius: 12px;
+    }
+    .cyber-btn:hover:not(:disabled) { 
+      background: rgba(34, 211, 238, 0.25); 
+      box-shadow: 0 0 15px rgba(34, 211, 238, 0.3); 
+      color: #cffafe; 
+      border-color: #22d3ee;
+    }
+    
+    .cyber-btn-primary { 
+      background: linear-gradient(135deg, #0284c7, #0891b2); 
+      border: 1px solid #67e8f9; 
+      color: #fff; 
+      transition: all 0.3s; 
+      font-weight: 700; 
+      box-shadow: 0 0 15px rgba(34, 211, 238, 0.2); 
+      border-radius: 12px;
+    }
+    .cyber-btn-primary:hover:not(:disabled) { 
+      filter: brightness(1.1); 
+      box-shadow: 0 0 20px rgba(34, 211, 238, 0.4); 
+      border-color: #cffafe;
+    }
+    
+    .cyber-tag { 
+      background: rgba(34, 211, 238, 0.1); 
+      border: 1px solid rgba(34, 211, 238, 0.3); 
+      color: #67e8f9; 
+      border-radius: 6px;
+    }
+    
+    .status-green { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.4); color: #34d399; box-shadow: inset 0 0 10px rgba(16, 185, 129, 0.1); }
+    .status-red { background: rgba(244, 63, 94, 0.1); border: 1px solid rgba(244, 63, 94, 0.4); color: #fb7185; box-shadow: inset 0 0 10px rgba(244, 63, 94, 0.1); }
+    .status-yellow { background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.4); color: #fbbf24; box-shadow: inset 0 0 10px rgba(245, 158, 11, 0.1); }
+    
+    .font-tech { font-family: 'JetBrains Mono', monospace; }
+    
+    /* Animations */
+    @keyframes cyber-pulse { 0%, 100% { opacity: 0.5; filter: drop-shadow(0 0 2px #22d3ee); } 50% { opacity: 1; filter: drop-shadow(0 0 12px #22d3ee); } }
+    @keyframes data-flow { to { stroke-dashoffset: 0; } }
+    .cyber-path { stroke-dasharray: 10 20; stroke-dashoffset: 200; animation: data-flow 3s linear infinite; }
+    .cyber-node { animation: cyber-pulse 2s infinite ease-in-out; }
+    @keyframes laser-scan { 0%, 100% { transform: translateY(-10px); opacity: 0; } 15%, 85% { opacity: 1; } 50% { transform: translateY(70px); } }
+    @keyframes hologram-flicker { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.6; } 60% { opacity: 0.2; } 70% { opacity: 0.8; } }
+    @keyframes cursor-blink { 0%, 100% { opacity: 0; } 50% { opacity: 1; filter: drop-shadow(0 0 5px currentColor); } }
+    @keyframes hover-trophy { 0%, 100% { transform: translateY(0); filter: drop-shadow(0 0 10px #22d3ee); } 50% { transform: translateY(-8px); filter: drop-shadow(0 0 20px #22d3ee); } }
+    @keyframes rotate-ring { to { transform: rotate(360deg); } }
+    
+    /* Custom Scrollbar class for specific divs */
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #0891b2; border-radius: 4px; }
+
+    /* Hide elements globally */
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body id="app-body" class="tech-bg flex h-screen overflow-hidden transition-colors duration-500 text-cyan-50">
+
+  <!-- Global Toast -->
+  <div id="toast-container" class="fixed bottom-8 left-1/2 -translate-x-1/2 z-[100] transition-all duration-300 transform translate-y-20 opacity-0 pointer-events-none">
+    <div class="cyber-glass text-cyan-50 px-6 py-3.5 rounded-xl shadow-[0_0_20px_rgba(34,211,238,0.3)] text-sm flex items-center gap-3 max-w-[90vw] text-center border-l-4 border-l-cyan-400">
+      <i data-lucide="alert-circle" class="w-4 h-4 shrink-0 text-cyan-400"></i>
+      <span id="toast-msg" class="leading-relaxed font-medium"></span>
+    </div>
+  </div>
+
+  <!-- Mobile Backdrop -->
+  <div id="mobile-backdrop" class="fixed inset-0 bg-slate-950/80 z-40 hidden backdrop-blur-sm transition-opacity cursor-pointer"></div>
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 cyber-glass flex flex-col transform transition-transform duration-400 ease-out -translate-x-full md:relative md:translate-x-0">
+    <div class="p-7 flex justify-between items-center border-b border-cyan-500/20">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-cyan-900/50 border border-cyan-400 text-cyan-400 flex items-center justify-center shadow-[0_0_10px_rgba(34,211,238,0.4)] rounded-xl">
+          <i data-lucide="cpu" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold text-cyan-50 tracking-wide">智能學習中樞</h1>
+          <span class="text-[10px] text-cyan-400 tracking-wider">科技版</span>
+        </div>
+      </div>
+      <button id="btn-close-sidebar" class="md:hidden text-cyan-500/60 hover:text-cyan-400 p-2 transition-colors">
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+    </div>
+    
+    <div class="px-5 py-5 space-y-3 mb-2">
+      <button data-mode="manage" class="mode-switch w-full flex items-center gap-3 px-4 py-3.5 text-sm transition-all duration-300 cyber-btn-primary">
+        <i data-lucide="book-open" class="w-4 h-4"></i> 錯題庫管理
+      </button>
+      <button data-mode="quiz_setup" class="mode-switch w-full flex items-center gap-3 px-4 py-3.5 text-sm transition-all duration-300 cyber-btn">
+        <i data-lucide="gamepad-2" class="w-4 h-4"></i> 記憶提取測驗
+      </button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto px-5 py-2 space-y-2 custom-scrollbar">
+      <p class="px-3 text-[11px] text-cyan-600/80 mb-3">科目分類</p>
+      <div id="subject-list"></div>
+    </div>
+
+    <div class="p-5 space-y-3 mt-auto border-t border-cyan-500/20 bg-slate-900/30">
+      <button id="btn-open-settings" class="w-full flex items-center justify-center gap-2 px-4 py-3 text-xs text-cyan-500/70 border border-cyan-500/30 hover:border-cyan-400 hover:text-cyan-300 hover:bg-cyan-900/20 transition-all rounded-lg">
+        <i data-lucide="palette" class="w-3.5 h-3.5"></i> 系統安全與介面設定
+      </button>
+      <div class="flex gap-2">
+        <button id="btn-export" class="flex-1 flex justify-center items-center gap-2 px-3 py-3 text-xs text-slate-400 bg-slate-800 hover:bg-cyan-900/50 hover:text-cyan-300 border border-slate-700 hover:border-cyan-500/50 transition-all rounded-lg">
+          <i data-lucide="download" class="w-3.5 h-3.5"></i> 匯出
+        </button>
+        <label class="flex-1 flex justify-center items-center gap-2 px-3 py-3 text-xs text-slate-400 bg-slate-800 hover:bg-cyan-900/50 hover:text-cyan-300 border border-slate-700 hover:border-cyan-500/50 transition-all cursor-pointer rounded-lg">
+          <i data-lucide="file-json" class="w-3.5 h-3.5"></i> 匯入
+          <input type="file" id="input-import" accept=".json" class="hidden" />
+        </label>
+      </div>
+    </div>
+
+    <!-- Data Storage Status -->
+    <div class="bg-slate-950 p-4 border-t border-cyan-500/30 flex flex-col items-center text-center gap-2">
+      <div class="flex items-center gap-2 text-xs text-cyan-400">
+        <i data-lucide="database" class="w-4 h-4"></i>
+        <span id="sync-status">本地存檔模式 (JSON)</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 flex flex-col h-full relative overflow-hidden">
+    
+    <!-- View: Manage -->
+    <div id="view-manage" class="flex flex-col h-full w-full">
+      <header class="cyber-glass px-6 py-4 flex flex-col md:flex-row items-center justify-between gap-4 z-10 sticky top-0 border-b border-cyan-500/30">
+        <div class="flex items-center gap-3 w-full md:w-auto flex-1">
+          <button id="btn-open-sidebar" class="md:hidden p-2 -ml-2 text-cyan-500 hover:text-cyan-300 transition-colors shrink-0">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+          <div class="relative w-full max-w-lg group">
+            <i data-lucide="search" class="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-cyan-600 group-focus-within:text-cyan-400 transition-colors"></i>
+            <input type="text" id="input-search" placeholder="搜尋題目內容或知識點..." class="cyber-input w-full pl-11 pr-4 py-2.5 text-sm" />
+          </div>
+        </div>
+        <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
+          <div class="flex items-center gap-2 cyber-input px-3 py-2 text-sm transition-all hover:border-cyan-400">
+            <i data-lucide="sliders-horizontal" class="w-4 h-4 text-cyan-500 shrink-0"></i>
+            <select id="select-sort" class="bg-transparent outline-none text-cyan-100 cursor-pointer text-xs pr-2 appearance-none">
+              <option value="date-desc" class="bg-slate-900 text-cyan-100">最新收錄</option>
+              <option value="date-asc" class="bg-slate-900 text-cyan-100">最舊收錄</option>
+              <option value="importance-desc" class="bg-slate-900 text-cyan-100">重要度最高</option>
+              <option value="importance-asc" class="bg-slate-900 text-cyan-100">重要度最低</option>
+              <option value="mastery-asc" class="bg-slate-900 text-cyan-100">生疏優先排</option>
+              <option value="mastery-desc" class="bg-slate-900 text-cyan-100">熟練優先排</option>
+            </select>
+          </div>
+          <button id="btn-add-question" class="cyber-btn-primary px-6 py-2.5 text-xs flex items-center gap-2 shrink-0">
+            <i data-lucide="plus" class="w-4 h-4"></i>
+            <span class="hidden sm:inline">新增紀錄</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Global Chat Box -->
+      <div class="bg-slate-900/80 backdrop-blur-md border-b border-cyan-500/20 p-5 md:px-8 flex flex-col shrink-0 z-0 transition-all shadow-[inset_0_-10px_20px_rgba(0,0,0,0.5)]">
+        <div class="flex items-center gap-2 mb-3 text-cyan-400 text-sm font-bold">
+          <i data-lucide="sparkles" class="w-4 h-4"></i>
+          <span>AI 學習管家</span>
+        </div>
+        <div id="global-chat-history" class="max-h-36 overflow-y-auto space-y-4 mb-4 pr-2 custom-scrollbar"></div>
+        <div class="flex items-end gap-3 relative max-w-4xl">
+          <textarea id="input-global-chat" placeholder="請輸入您的問題或指令..." class="flex-1 max-h-24 min-h-[44px] cyber-input px-4 py-3 text-sm resize-none" rows="1"></textarea>
+          <button id="btn-send-global-chat" class="cyber-btn p-3 shrink-0 rounded-xl">
+            <i data-lucide="send" class="w-5 h-5"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Question List -->
+      <div class="flex-1 overflow-y-auto p-5 md:p-8 custom-scrollbar relative">
+        <div id="questions-container" class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-6 items-start pb-10"></div>
+        <div id="empty-state" class="absolute inset-0 flex flex-col items-center justify-center space-y-6 hidden"></div>
+      </div>
+    </div>
+
+    <!-- View: Quiz Setup -->
+    <div id="view-quiz-setup" class="flex-1 overflow-y-auto p-4 md:p-8 flex items-center justify-center custom-scrollbar hidden">
+      <div class="w-full max-w-2xl cyber-card p-8 md:p-10">
+        <div class="flex items-center gap-5 mb-10 pb-6 border-b border-cyan-500/30">
+          <div class="p-3 border border-cyan-500/50 text-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.2)] rounded-xl">
+            <i data-lucide="target" class="w-8 h-8"></i>
+          </div>
+          <div>
+            <h2 class="text-2xl text-cyan-50 font-bold">記憶提取測驗</h2>
+            <p class="text-sm text-cyan-600/80 mt-1">請設定您的測驗範圍與條件。</p>
+          </div>
+        </div>
+
+        <div class="space-y-7">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-7">
+            <div class="space-y-2">
+              <label class="text-sm text-cyan-300 flex items-center gap-2"><i data-lucide="book-open" class="w-4 h-4"></i> 測驗科目</label>
+              <select id="quiz-select-subject" class="w-full px-4 py-3 cyber-input cursor-pointer"></select>
+            </div>
+            <div class="space-y-2">
+              <label class="text-sm text-cyan-300 flex items-center gap-2"><i data-lucide="list-todo" class="w-4 h-4"></i> 測驗題數</label>
+              <select id="quiz-select-limit" class="w-full px-4 py-3 cyber-input cursor-pointer">
+                <option class="bg-slate-900" value="5">隨機 5 題</option>
+                <option class="bg-slate-900" value="10">隨機 10 題</option>
+                <option class="bg-slate-900" value="20">隨機 20 題</option>
+                <option class="bg-slate-900" value="50">隨機 50 題</option>
+              </select>
+            </div>
+          </div>
+          <div class="space-y-2">
+            <label class="text-sm text-cyan-300 flex items-center gap-2"><i data-lucide="search" class="w-4 h-4"></i> 關鍵字過濾</label>
+            <input type="text" id="quiz-input-keyword" class="w-full px-4 py-3 cyber-input" placeholder="[選填] 輸入題目或知識點關鍵字..." />
+          </div>
+          <div class="space-y-2">
+            <label class="text-sm text-cyan-300 flex items-center gap-2"><i data-lucide="trending-up" class="w-4 h-4"></i> 最高熟練度限制</label>
+            <p class="text-xs text-cyan-600/80 mb-3">系統將篩選出熟練度小於等於此星數的題目。</p>
+            <div class="flex gap-2 items-center bg-slate-900/50 p-2 border border-cyan-900/50 inline-flex rounded-xl" id="quiz-mastery-selector">
+              <!-- Stars injected here -->
+            </div>
+          </div>
+          <button id="btn-start-quiz" class="w-full mt-10 py-4 cyber-btn-primary flex items-center justify-center gap-3 text-lg rounded-xl">
+            <i data-lucide="play" class="w-5 h-5 fill-current"></i> <span id="quiz-start-text">開始測驗</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- View: Quiz Active -->
+    <div id="view-quiz-active" class="flex-1 overflow-y-auto p-4 md:p-8 flex flex-col custom-scrollbar hidden">
+      <div class="max-w-3xl w-full mx-auto cyber-card p-7 md:p-10 flex-1 flex flex-col relative">
+        <div class="flex justify-between items-center mb-8 pb-5 border-b border-cyan-500/30">
+          <div class="flex items-center gap-4">
+            <div id="quiz-active-progress" class="bg-cyan-500/20 text-cyan-300 border border-cyan-400 px-4 py-1 text-sm shadow-[0_0_10px_rgba(34,211,238,0.2)] rounded-lg"></div>
+            <div id="quiz-active-tags" class="flex items-center gap-3"></div>
+          </div>
+          <button id="btn-abort-quiz" class="text-slate-500 hover:text-red-400 p-2 transition-colors flex items-center justify-center">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+        <div class="flex-1 flex flex-col gap-6" id="quiz-active-content">
+           <!-- Question Content Injected Here -->
+        </div>
+      </div>
+    </div>
+
+    <!-- View: Quiz Summary -->
+    <div id="view-quiz-summary" class="flex-1 overflow-y-auto p-4 flex items-center justify-center relative hidden">
+       <div class="absolute inset-0 pointer-events-none flex items-center justify-center opacity-20">
+          <div class="w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(34,211,238,0.4)_0%,transparent_70%)]"></div>
+       </div>
+       <div class="max-w-md w-full cyber-card p-10 text-center relative z-10 border-cyan-400 shadow-[0_0_30px_rgba(34,211,238,0.15)] rounded-3xl">
+          <div class="w-32 h-32 mx-auto mb-8 relative" id="trophy-container"></div>
+          <h2 class="text-3xl font-bold text-cyan-50 mb-2">測驗完成</h2>
+          <p class="text-cyan-300/70 text-base leading-relaxed mb-8">
+            您已處理 <strong id="quiz-summary-count" class="text-cyan-400 text-lg px-1">0</strong> 個錯題數據。<br/>
+            學習記憶已成功更新。
+          </p>
+          <button id="btn-end-quiz" class="w-full py-4 cyber-btn-primary rounded-xl">返回主介面</button>
+       </div>
+    </div>
+  </main>
+
+  <!-- Modal: Editor -->
+  <div id="modal-editor" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center z-[60] p-4 hidden">
+    <div class="cyber-card w-full max-w-4xl max-h-[95vh] flex flex-col border-cyan-500 shadow-[0_0_30px_rgba(34,211,238,0.1)] rounded-2xl">
+      <div class="px-6 py-4 border-b border-cyan-500/30 flex justify-between items-center bg-slate-900 rounded-t-2xl">
+        <h2 id="modal-editor-title" class="text-base font-bold text-cyan-300 flex items-center gap-2">新增錯題紀錄</h2>
+        <button id="btn-close-editor" class="text-slate-500 hover:text-cyan-400 transition-colors"><i data-lucide="x" class="w-6 h-6"></i></button>
+      </div>
+      <div class="p-6 overflow-y-auto flex-1 space-y-6 custom-scrollbar bg-slate-950/50">
+        <!-- Image Area -->
+        <div class="space-y-2">
+          <label class="text-sm font-bold text-cyan-500 flex items-center gap-2"><i data-lucide="image" class="w-4 h-4"></i> 視覺數據 (圖片)</label>
+          <div id="editor-image-container" class="border border-dashed transition-all duration-300 rounded-xl border-cyan-800 bg-slate-900/30 min-h-[160px] flex flex-col items-center justify-center">
+            <!-- Dynamic Content -->
+          </div>
+          <input type="file" id="editor-file-input" accept="image/*" class="hidden" />
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <label class="text-sm font-bold text-cyan-500 flex items-center gap-2"><i data-lucide="tag" class="w-4 h-4"></i> 科目分類</label>
+            <input type="text" id="edit-subject" class="w-full px-4 py-3 cyber-input text-base" placeholder="例如：數學、英文..." />
+          </div>
+          <div class="space-y-2">
+            <label class="text-sm font-bold text-cyan-500 flex items-center gap-2"><i data-lucide="calendar" class="w-4 h-4"></i> 時間戳記</label>
+            <input type="date" id="edit-date" class="w-full px-4 py-3 cyber-input text-base" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <label class="text-sm font-bold text-cyan-500 flex items-center gap-2"><i data-lucide="trending-up" class="w-4 h-4"></i> 熟練度等級</label>
+            <div id="edit-mastery" class="flex gap-2 items-center h-[48px] cyber-input px-3 w-max"></div>
+          </div>
+          <div class="space-y-2">
+            <label class="text-sm font-bold text-cyan-500 flex items-center gap-2"><i data-lucide="flame" class="w-4 h-4"></i> 優先級</label>
+            <div id="edit-importance" class="flex gap-2 h-[48px]">
+              <button data-val="低" class="imp-btn flex-1 text-sm font-bold transition-all rounded-lg cyber-input text-slate-500">低</button>
+              <button data-val="中" class="imp-btn flex-1 text-sm font-bold transition-all rounded-lg cyber-input text-slate-500">中</button>
+              <button data-val="高" class="imp-btn flex-1 text-sm font-bold transition-all rounded-lg cyber-input text-slate-500">高</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <label class="text-sm font-bold text-amber-500 flex items-center gap-2"><i data-lucide="alert-triangle" class="w-4 h-4"></i> 錯誤根源分析</label>
+            <input type="text" id="edit-errorReason" class="w-full px-4 py-3 bg-amber-900/10 border border-amber-500/30 text-amber-100 placeholder-amber-700/50 focus:border-amber-400 focus:outline-none transition-all text-base rounded-xl" placeholder="例如：粗心計算..." />
+          </div>
+          <div class="space-y-2">
+            <label class="text-sm font-bold text-cyan-500 flex items-center gap-2"><i data-lucide="lightbulb" class="w-4 h-4"></i> 標籤系統</label>
+            <input type="text" id="edit-knowledgePoints" class="w-full px-4 py-3 cyber-input text-base" placeholder="標籤1, 標籤2" />
+          </div>
+        </div>
+
+        <div class="space-y-2">
+          <label class="text-sm font-bold text-cyan-500 flex items-center gap-2"><i data-lucide="book-open" class="w-4 h-4"></i> 原始文字數據</label>
+          <textarea id="edit-questionText" class="w-full px-4 py-3 cyber-input min-h-[100px] resize-y text-base" placeholder="輸入完整題目內容..."></textarea>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-2">
+            <label class="text-sm font-bold text-rose-500 flex items-center gap-2"><i data-lucide="x-circle" class="w-4 h-4"></i> 錯誤作答紀錄</label>
+            <textarea id="edit-userAnswer" class="w-full px-4 py-3 bg-rose-900/10 border border-rose-500/30 text-rose-100 placeholder-rose-800/50 focus:border-rose-400 focus:outline-none transition-all min-h-[80px] resize-y text-base rounded-xl" placeholder="紀錄您當時的錯誤答案..."></textarea>
+          </div>
+          <div class="space-y-2">
+            <label class="text-sm font-bold text-emerald-500 flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4"></i> 正確解答</label>
+            <textarea id="edit-correctAnswer" class="w-full px-4 py-3 bg-emerald-900/10 border border-emerald-500/30 text-emerald-100 placeholder-emerald-800/50 focus:border-emerald-400 focus:outline-none transition-all min-h-[80px] resize-y text-base rounded-xl" placeholder="標準正確解答是？"></textarea>
+          </div>
+        </div>
+
+        <div class="space-y-3 pt-6 border-t border-cyan-500/20">
+          <div class="flex items-center justify-between">
+            <label class="text-sm font-bold text-cyan-400 flex items-center gap-2"><i data-lucide="brain-circuit" class="w-4 h-4"></i> 系統分析日誌</label>
+            <button id="btn-auto-solve" class="text-xs bg-cyan-900/40 border border-cyan-500/50 text-cyan-300 px-3 py-1.5 hover:bg-cyan-800 transition-all flex items-center gap-1.5 rounded-lg">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> <span>自動推導</span>
+            </button>
+          </div>
+          <textarea id="edit-aiAnalysis" class="w-full px-4 py-3 cyber-input min-h-[140px] resize-y text-base leading-relaxed"></textarea>
+        </div>
+      </div>
+      <div class="p-5 border-t border-cyan-500/30 bg-slate-900 flex justify-end gap-4 shrink-0 rounded-b-2xl">
+        <button id="btn-cancel-editor" class="cyber-btn px-6 py-2.5 text-sm">取消</button>
+        <button id="btn-save-editor" class="cyber-btn-primary px-8 py-2.5 text-sm flex items-center gap-2"><i data-lucide="save" class="w-4 h-4"></i> 確認提交</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Chat Panel -->
+  <div id="modal-chat" class="fixed inset-0 z-[65] hidden">
+    <div id="chat-backdrop" class="absolute inset-0 bg-slate-950/60 md:hidden backdrop-blur-sm"></div>
+    <div class="absolute top-0 right-0 bottom-0 w-[90%] md:w-96 cyber-glass border-l border-cyan-500/30 flex flex-col transform transition-transform duration-300 translate-x-full" id="chat-panel">
+      <div class="px-5 py-4 border-b border-cyan-500/30 flex justify-between items-center bg-slate-900">
+        <div class="flex items-center gap-2"><i data-lucide="terminal" class="w-5 h-5 text-cyan-400"></i><h3 class="font-bold text-cyan-300 text-base">AI 家教介面</h3></div>
+        <button id="btn-close-chat" class="text-slate-500 hover:text-cyan-400 transition-colors"><i data-lucide="arrow-right" class="w-6 h-6"></i></button>
+      </div>
+      <div class="p-4 bg-cyan-950/50 border-b border-cyan-900/50 flex flex-col gap-1.5 shrink-0">
+        <span class="text-xs text-cyan-500 font-bold">當前探討題目:</span>
+        <span id="chat-context-text" class="text-sm text-cyan-100/80 line-clamp-2"></span>
+      </div>
+      <div id="tutor-chat-history" class="flex-1 overflow-y-auto p-5 space-y-4 bg-slate-950/50 custom-scrollbar"></div>
+      <div class="p-4 bg-slate-900 border-t border-cyan-500/30 shrink-0">
+        <div class="flex items-end gap-3">
+          <textarea id="input-tutor-chat" placeholder="請輸入您的問題..." class="flex-1 max-h-32 min-h-[48px] cyber-input px-4 py-3 text-sm resize-none" rows="1"></textarea>
+          <button id="btn-send-tutor-chat" class="cyber-btn p-3 shrink-0 rounded-xl"><i data-lucide="chevron-right" class="w-5 h-5"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Settings -->
+  <div id="modal-settings" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center z-[70] p-4 hidden">
+    <div class="cyber-card w-full max-w-md max-h-[90vh] flex flex-col border-cyan-500 shadow-[0_0_30px_rgba(34,211,238,0.15)] rounded-2xl">
+      <div class="px-6 py-4 border-b border-cyan-500/30 flex justify-between items-center bg-slate-900 rounded-t-2xl">
+        <h2 class="text-base font-bold text-cyan-300 flex items-center gap-2"><i data-lucide="palette" class="w-5 h-5 text-cyan-400"></i>系統介面與安全設定</h2>
+        <button id="btn-close-settings" class="text-slate-500 hover:text-cyan-400 transition-colors"><i data-lucide="x" class="w-6 h-6"></i></button>
+      </div>
+      <div class="p-6 space-y-6 bg-slate-950/50 overflow-y-auto custom-scrollbar flex-1">
+        
+        <!-- API Key Section -->
+        <div class="space-y-3">
+          <label class="text-sm font-bold text-cyan-500 flex items-center gap-2"><i data-lucide="key" class="w-4 h-4"></i> Gemini API 金鑰 (本機安全儲存)</label>
+          <input type="password" id="setting-api-key" class="w-full px-4 py-3 cyber-input text-sm font-tech" placeholder="請輸入 AIza 開頭的金鑰..." />
+          <p class="text-[10px] text-cyan-600/80 leading-relaxed">金鑰將嚴格保存在您設備的瀏覽器中，不會跟隨程式碼上傳至 GitHub，確保絕對安全。</p>
+        </div>
+
+        <!-- AI Model Section -->
+        <div class="space-y-3 pt-4 border-t border-cyan-500/30">
+          <label class="text-sm font-bold text-cyan-500 flex items-center gap-2"><i data-lucide="cpu" class="w-4 h-4"></i> 選擇 AI 核心模型</label>
+          <select id="setting-api-model" class="w-full px-4 py-3 cyber-input text-sm font-tech cursor-pointer appearance-none">
+            <option class="bg-slate-900" value="gemini-2.5-flash">Gemini 2.5 Flash (專屬極速引擎)</option>
+          </select>
+          <p class="text-[10px] text-cyan-600/80 leading-relaxed">系統已鎖定使用 Gemini 2.5 Flash 引擎，為您提供最穩定且快速的解析與視覺掃描體驗。</p>
+        </div>
+
+        <!-- Theme Section -->
+        <div class="space-y-3 pt-4 border-t border-cyan-500/30">
+          <label class="text-sm font-bold text-cyan-500">選擇環境背景</label>
+          <div id="theme-presets" class="grid grid-cols-1 gap-3 max-h-48 overflow-y-auto custom-scrollbar pr-2"></div>
+          
+          <!-- Custom BG input -->
+          <div class="mt-3 space-y-2">
+             <label class="text-xs font-bold text-cyan-500/80 flex items-center gap-2"><i data-lucide="image" class="w-3 h-3"></i> 自訂背景圖片 (網址)</label>
+             <div class="flex gap-2">
+               <input type="text" id="setting-custom-bg-url" class="w-full px-3 py-2 cyber-input text-xs font-tech" placeholder="輸入圖片網址 (https://...)" />
+               <button id="btn-apply-custom-bg" class="cyber-btn px-3 py-2 shrink-0 text-xs rounded-lg">套用</button>
+             </div>
+             <p class="text-[10px] text-cyan-600/80 leading-relaxed">貼上您喜歡的圖片、桌布或動漫圖片網址，打造專屬您的錯題本空間！</p>
+          </div>
+        </div>
+
+      </div>
+      <div class="p-5 border-t border-cyan-500/30 bg-slate-900 flex justify-end rounded-b-2xl">
+        <button id="btn-apply-settings" class="cyber-btn px-8 py-2.5 text-sm rounded-lg">儲存並套用</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Camera -->
+  <div id="modal-camera" class="fixed inset-0 bg-slate-950/95 backdrop-blur-xl z-[90] flex flex-col hidden">
+    <div class="p-5 flex justify-between items-center text-cyan-400 border-b border-cyan-500/20 bg-slate-900/50 shadow-md">
+      <div class="flex items-center gap-3">
+        <div class="p-1.5 bg-cyan-900/50 rounded-lg border border-cyan-500/30"><i data-lucide="camera" class="w-5 h-5 text-cyan-400"></i></div>
+        <span class="text-sm font-bold">光學感測器已啟動</span>
+      </div>
+      <button id="btn-close-camera" class="p-2 hover:bg-slate-800 rounded-xl transition-colors text-slate-400 hover:text-cyan-400"><i data-lucide="x" class="w-6 h-6"></i></button>
+    </div>
+    <div class="flex-1 relative overflow-hidden flex items-center justify-center p-4 bg-slate-950/80">
+      <div class="relative w-full max-w-3xl aspect-[3/4] md:aspect-video rounded-3xl overflow-hidden border-2 border-cyan-500/50 shadow-[0_0_30px_rgba(34,211,238,0.15)] bg-black">
+        <video id="camera-video" autoPlay playsInline class="w-full h-full object-cover"></video>
+        <!-- Overlay -->
+        <div class="absolute inset-0 pointer-events-none">
+          <div class="w-full h-full border-4 border-cyan-400/20 rounded-3xl"></div>
+          <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 flex items-center justify-center opacity-60">
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-0.5 h-4 bg-cyan-400"></div>
+            <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-0.5 h-4 bg-cyan-400"></div>
+            <div class="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-0.5 bg-cyan-400"></div>
+            <div class="absolute right-0 top-1/2 -translate-y-1/2 w-4 h-0.5 bg-cyan-400"></div>
+            <div class="w-1.5 h-1.5 bg-cyan-400 rounded-full shadow-[0_0_10px_#22d3ee]"></div>
+          </div>
+          <div class="absolute top-0 left-0 w-full h-[2px] bg-cyan-400 shadow-[0_0_15px_#22d3ee]" style="animation: laser-scan 3s infinite ease-in-out"></div>
+        </div>
+      </div>
+    </div>
+    <div class="p-6 pb-10 flex justify-center gap-10 items-center bg-slate-900 border-t border-cyan-500/30">
+      <button id="btn-switch-camera" class="p-4 rounded-2xl cyber-glass text-cyan-400 hover:text-cyan-200 transition-colors border border-cyan-500/30 hover:border-cyan-400"><i data-lucide="refresh-cw" class="w-6 h-6"></i></button>
+      <button id="btn-capture-camera" class="w-20 h-20 rounded-full border-[3px] border-cyan-400 bg-cyan-900/50 flex items-center justify-center hover:bg-cyan-800 transition-all shadow-[0_0_25px_rgba(34,211,238,0.3)] hover:scale-105 group">
+        <div class="w-[52px] h-[52px] bg-cyan-400 rounded-full shadow-[0_0_10px_#22d3ee] group-hover:scale-95 transition-transform"></div>
+      </button>
+      <div class="w-[68px]"></div>
+    </div>
+  </div>
+
+  <script type="module">
+    // --- Theme Configurations ---
+    const themePresets = [
+      { name: '智能核心 (Core)', type: 'class', value: 'tech-bg' },
+      { name: '暗曜星際 (Dark Space)', type: 'css', cssText: 'background-color: #020617;' },
+      { name: '深海湛藍 (Deep Blue)', type: 'css', cssText: 'background: radial-gradient(ellipse at bottom left, rgba(30, 58, 138, 0.4), #020617, #000);' },
+      { name: '未來矩陣 (Future Matrix)', type: 'css', cssText: 'background: radial-gradient(ellipse at center, rgba(6, 78, 59, 0.3), #020617, #000);' },
+      { name: '極光星系 (Aurora)', type: 'css', cssText: 'background: radial-gradient(ellipse at top right, rgba(112, 26, 117, 0.3), #0f172a, rgba(22, 78, 99, 0.3));' },
+      { name: '緋紅星雲 (Crimson Nebula)', type: 'css', cssText: 'background: radial-gradient(ellipse at top, rgba(136, 19, 55, 0.3), #020617, #000);' },
+      { name: '深淵駭客 (Cyber Void)', type: 'css', cssText: 'background-color: #000; background-image: linear-gradient(rgba(0,255,100,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,100,0.05) 1px, transparent 1px); background-size: 40px 40px;' }
+    ];
+
+    // --- State Management ---
+    const state = {
+      questions: JSON.parse(localStorage.getItem('smart-mistakes-data')) || [],
+      selectedSubject: 'All',
+      searchQuery: '',
+      sortBy: 'date-desc',
+      user: null,
+      appMode: 'manage',
+      quizConfig: { subject: 'All', keyword: '', maxMastery: 5, limit: 10 },
+      quizQuestions: [],
+      currentQuizIndex: 0,
+      currentQuizAnswer: '',
+      isQuizAnswerRevealed: false,
+      isEvaluatingQuiz: false,
+      quizEvaluation: null,
+      editingQuestion: null,
+      currentChatContext: null,
+      bgSettings: JSON.parse(localStorage.getItem('smart-mistakes-bg')) || { name: '智能核心 (Core)', type: 'class', value: 'tech-bg' },
+      apiKey: localStorage.getItem('smart-mistakes-apikey') || '',
+      apiModel: localStorage.getItem('smart-mistakes-model') || 'gemini-2.5-flash',
+      formData: {},
+      isScanning: false,
+      isAnalyzing: false,
+      cameraStream: null,
+      facingMode: 'environment',
+      globalMessages: [{ role: 'ai', text: '您好，我是您的專屬 AI 學習助理，系統已連線。請問有什麼需要協助的嗎？' }],
+      tutorMessages: []
+    };
+
+    // --- Utility Functions ---
+    const saveData = () => {
+      localStorage.setItem('smart-mistakes-data', JSON.stringify(state.questions));
+    };
+
+    // SVG Templates
+    const getSvgBrain = (classes) => `<svg class="${classes}" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M50 85 C 30 85, 15 70, 15 50 C 15 35, 25 20, 40 15 C 45 13, 55 13, 60 15 C 75 20, 85 35, 85 50 C 85 70, 70 85, 50 85 Z" stroke="#0891b2" stroke-width="1" opacity="0.5"/><path class="cyber-path" d="M50 85 C 30 85, 15 70, 15 50 C 15 35, 25 20, 40 15 C 45 13, 55 13, 60 15 C 75 20, 85 35, 85 50 C 85 70, 70 85, 50 85 Z" stroke="#22d3ee" stroke-width="2" stroke-linecap="square"/><path d="M50 15 V 85 M 15 50 H 85 M 25 25 L 50 50 M 75 25 L 50 50 M 25 75 L 50 50 M 75 75 L 50 50" stroke="#0891b2" stroke-width="1" stroke-dasharray="2 4"/><rect class="cyber-node" x="47" y="47" width="6" height="6" fill="#22d3ee" /><rect class="cyber-node" x="38" y="13" width="4" height="4" fill="#22d3ee" style="animation-delay: 0.3s;"/><rect class="cyber-node" x="58" y="13" width="4" height="4" fill="#22d3ee" style="animation-delay: 0.6s;"/><rect class="cyber-node" x="13" y="48" width="4" height="4" fill="#22d3ee" style="animation-delay: 0.9s;"/><rect class="cyber-node" x="83" y="48" width="4" height="4" fill="#22d3ee" style="animation-delay: 1.2s;"/><rect class="cyber-node" x="48" y="83" width="4" height="4" fill="#22d3ee" style="animation-delay: 1.5s;"/></svg>`;
+    const getSvgScanner = (classes) => `<svg class="${classes}" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="25" y="15" width="50" height="70" stroke="#0891b2" stroke-width="1.5" stroke-dasharray="3 6" style="animation: hologram-flicker 4s infinite;"/><path d="M20 10 L30 10 M10 20 L10 30 M80 10 L70 10 M90 20 L90 30 M20 90 L30 90 M10 80 L10 70 M80 90 L70 90 M90 80 L90 70" stroke="#22d3ee" stroke-width="2"/><g style="animation: laser-scan 2s infinite ease-in-out;"><line x1="15" y1="15" x2="85" y2="15" stroke="#22d3ee" stroke-width="2" filter="drop-shadow(0 0 8px #22d3ee)"/><polygon points="50,22 45,15 55,15" fill="#22d3ee" opacity="0.8"/></g></svg>`;
+    const getSvgTyping = (classes) => `<svg class="${classes}" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="4" y="10" width="3" height="6" fill="currentColor" style="animation: cursor-blink 1s infinite;"/><rect x="10" y="10" width="3" height="6" fill="currentColor" style="animation: cursor-blink 1s infinite; animation-delay: 0.2s;"/><rect x="16" y="10" width="3" height="6" fill="currentColor" style="animation: cursor-blink 1s infinite; animation-delay: 0.4s;"/></svg>`;
+    const getSvgTrophy = (classes) => `<svg class="${classes}" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"><g style="animation: hover-trophy 3s ease-in-out infinite;"><path d="M30 20 H70 V35 C70 55 50 65 50 65 C50 65 30 55 30 35 V20 Z" fill="rgba(34,211,238,0.1)" stroke="#22d3ee" stroke-width="2"/><path d="M50 65 V85 M35 85 H65" stroke="#22d3ee" stroke-width="2"/><path d="M30 25 H20 V35 C20 45 30 45 30 45 M70 25 H80 V35 C80 45 70 45 70 45" stroke="#22d3ee" stroke-width="2" fill="none"/><ellipse cx="50" cy="20" rx="20" ry="5" fill="none" stroke="#67e8f9" stroke-width="1" stroke-dasharray="2 2"/></g><g style="transform-origin: 50px 40px; animation: rotate-ring 6s linear infinite;"><ellipse cx="50" cy="40" rx="35" ry="10" fill="none" stroke="#0891b2" stroke-width="1" transform="rotate(20 50 40)"/><circle cx="16" cy="30" r="2" fill="#22d3ee" /><circle cx="84" cy="50" r="2" fill="#22d3ee" /></g></svg>`;
+
+    // --- DOM Elements ---
+    const els = {
+      body: document.getElementById('app-body'),
+      toast: { container: document.getElementById('toast-container'), msg: document.getElementById('toast-msg') },
+      sidebar: document.getElementById('sidebar'),
+      backdrop: document.getElementById('mobile-backdrop'),
+      views: {
+        manage: document.getElementById('view-manage'),
+        quizSetup: document.getElementById('view-quiz-setup'),
+        quizActive: document.getElementById('view-quiz-active'),
+        quizSummary: document.getElementById('view-quiz-summary')
+      },
+      manage: {
+        questionsContainer: document.getElementById('questions-container'),
+        emptyState: document.getElementById('empty-state'),
+        searchInput: document.getElementById('input-search'),
+        sortSelect: document.getElementById('select-sort'),
+        subjectList: document.getElementById('subject-list'),
+      },
+      globalChat: {
+        history: document.getElementById('global-chat-history'),
+        input: document.getElementById('input-global-chat')
+      },
+      editor: {
+        modal: document.getElementById('modal-editor'),
+        title: document.getElementById('modal-editor-title'),
+        imgContainer: document.getElementById('editor-image-container'),
+        fileInput: document.getElementById('editor-file-input')
+      },
+      camera: {
+        modal: document.getElementById('modal-camera'),
+        video: document.getElementById('camera-video')
+      },
+      chat: {
+        modal: document.getElementById('modal-chat'),
+        panel: document.getElementById('chat-panel'),
+        contextText: document.getElementById('chat-context-text'),
+        history: document.getElementById('tutor-chat-history'),
+        input: document.getElementById('input-tutor-chat')
+      },
+      settings: {
+        modal: document.getElementById('modal-settings'),
+        presets: document.getElementById('theme-presets')
+      },
+      quiz: {
+         selectSubject: document.getElementById('quiz-select-subject'),
+         selectLimit: document.getElementById('quiz-select-limit'),
+         inputKeyword: document.getElementById('quiz-input-keyword'),
+         masterySelector: document.getElementById('quiz-mastery-selector'),
+         startText: document.getElementById('quiz-start-text'),
+         activeContent: document.getElementById('quiz-active-content'),
+         activeProgress: document.getElementById('quiz-active-progress'),
+         activeTags: document.getElementById('quiz-active-tags'),
+      }
+    };
+
+    // --- Utility Functions ---
+    let toastTimeout;
+    const showToast = (msg) => {
+      els.toast.msg.textContent = msg;
+      els.toast.container.classList.remove('translate-y-20', 'opacity-0');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        els.toast.container.classList.add('translate-y-20', 'opacity-0');
+      }, 5000);
+    };
+
+    const updateIcons = () => lucide.createIcons();
+
+    const switchView = (mode) => {
+      state.appMode = mode;
+      Object.values(els.views).forEach(el => el.classList.add('hidden'));
+      document.querySelectorAll('.mode-switch').forEach(btn => {
+        if(btn.dataset.mode === mode) {
+          btn.classList.add('cyber-btn-primary');
+          btn.classList.remove('cyber-btn');
+        } else {
+          btn.classList.add('cyber-btn');
+          btn.classList.remove('cyber-btn-primary');
+        }
+      });
+      if (mode === 'manage') els.views.manage.classList.remove('hidden');
+      if (mode === 'quiz_setup') {
+         renderQuizSetup();
+         els.views.quizSetup.classList.remove('hidden');
+      }
+      if (mode === 'quiz_active') els.views.quizActive.classList.remove('hidden');
+      if (mode === 'quiz_summary') {
+         document.getElementById('quiz-summary-count').textContent = state.quizQuestions.length;
+         document.getElementById('trophy-container').innerHTML = getSvgTrophy("w-full h-full");
+         els.views.quizSummary.classList.remove('hidden');
+      }
+    };
+
+    const toggleSidebar = (forceClose = false) => {
+      const isClosed = els.sidebar.classList.contains('-translate-x-full');
+      if (!isClosed || forceClose) {
+        els.sidebar.classList.add('-translate-x-full');
+        els.backdrop.classList.add('hidden');
+      } else {
+        els.sidebar.classList.remove('-translate-x-full');
+        els.backdrop.classList.remove('hidden');
+      }
+    };
+
+    const applyTheme = () => {
+      const bg = state.bgSettings;
+      
+      // 重置基礎類別與樣式
+      els.body.className = `flex h-screen overflow-hidden transition-colors duration-500 text-cyan-50`;
+      els.body.style.cssText = '';
+
+      if (bg.type === 'class') {
+        els.body.classList.add(bg.value);
+      } else if (bg.type === 'css') {
+        els.body.style.cssText = bg.cssText;
+      } else if (bg.type === 'image') {
+        els.body.style.background = `url('${bg.value}') center/cover no-repeat fixed`;
+      }
+    };
+
+    // 精準錯誤攔截機制
+    const fetchWithBackoffLocal = async (url, options, retries = 3) => {
+      const delays = [1000, 2000, 4000];
+      for (let i = 0; i < retries; i++) {
+        try {
+          const res = await fetch(url, options);
+          if (!res.ok) {
+            const errData = await res.json().catch(() => ({}));
+            const errorMsg = errData?.error?.message || `狀態碼: ${res.status}`;
+            
+            // 400, 403, 404 是致命錯誤 (金鑰錯誤或模型不存在)，立刻中斷，不要傻傻等待重試
+            if (res.status >= 400 && res.status < 500 && res.status !== 429) {
+               throw new Error(`API 拒絕連線: ${errorMsg}`); 
+            }
+            throw new Error(`HTTP error: ${errorMsg}`);
+          }
+          return await res.json();
+        } catch (error) {
+          // 如果是致命錯誤，或者已經重試到最後一次，就直接拋出錯誤給上層 UI 顯示
+          if (i === retries - 1 || error.message.includes("API 拒絕連線")) {
+              throw error;
+          }
+          await new Promise(resolve => setTimeout(resolve, delays[i]));
+        }
+      }
+    };
+
+    const callGeminiAPI = async (prompt, imageBase64 = null, expectJson = false, systemInstruction = "") => {
+      if (!state.apiKey) {
+        showToast("系統警告：未偵測到 API 金鑰，請先至左下角「介面主題設定」中配置。");
+        throw new Error("尚未設定 API 金鑰");
+      }
+
+      const model = state.apiModel || "gemini-2.5-flash"; 
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${state.apiKey}`;
+      
+      const parts = [{ text: prompt }];
+      if (imageBase64) {
+        const mimeType = imageBase64.substring(imageBase64.indexOf(":") + 1, imageBase64.indexOf(";"));
+        const base64Data = imageBase64.split(",")[1];
+        parts.push({ inlineData: { mimeType, data: base64Data } });
+      }
+      const payload = { contents: [{ parts }] };
+      if (systemInstruction) payload.systemInstruction = { parts: [{ text: systemInstruction }] };
+      if (expectJson) payload.generationConfig = { responseMimeType: "application/json" };
+
+      // 精準錯誤攔截機制
+      const data = await fetchWithBackoffLocal(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }).catch(e => {
+          // 如果是 API Key 無效的錯誤
+          if (e.message.includes("API key not valid") || e.message.includes("API_KEY_INVALID")) {
+              const keyMsg = "系統錯誤：API 金鑰無效。請點擊左下角設定，確認您填入的是最新且正確的金鑰！";
+              showToast(keyMsg);
+              throw new Error(keyMsg);
+          }
+          throw e;
+      });
+
+      const textResponse = data.candidates?.[0]?.content?.parts?.[0]?.text;
+      
+      if (expectJson) {
+        try { return JSON.parse(textResponse); } catch (e) { return null; }
+      }
+      return textResponse;
+    };
+
+    // --- Render Functions ---
+    const getStarsHtml = (mastery, isInteractive = false, id = null) => {
+      let html = '';
+      for(let i=1; i<=5; i++) {
+        const active = mastery >= i;
+        const colorClass = active ? 'text-cyan-400 fill-cyan-400' : 'text-slate-700';
+        if(isInteractive) {
+           const interactiveClasses = active ? 'text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]' : 'text-slate-700 hover:text-cyan-900';
+           html += `<button data-action="update-star" data-id="${id}" data-val="${i}" class="p-1.5 transition-all hover:scale-125 ${interactiveClasses}"><i data-lucide="star" class="w-6 h-6 ${active?'fill-current':''}"></i></button>`;
+        } else {
+           html += `<i data-lucide="star" class="w-2.5 h-2.5 ${colorClass}"></i>`;
+        }
+      }
+      return html;
+    };
+
+    const renderSubjects = () => {
+      const subs = ['All', ...new Set(state.questions.map(q => q.subject).filter(Boolean))];
+      els.manage.subjectList.innerHTML = subs.map(sub => {
+        const count = sub === 'All' ? state.questions.length : state.questions.filter(q => q.subject === sub).length;
+        const isActive = state.selectedSubject === sub;
+        const baseClass = `w-full flex items-center gap-3 px-4 py-3 text-sm font-medium transition-all rounded-lg border-l-2`;
+        const activeClass = isActive ? `bg-cyan-500/20 text-cyan-300 border-cyan-400` : `text-slate-400 hover:text-cyan-200 hover:bg-slate-800/50 border-transparent`;
+        const badgeClass = isActive ? `border-cyan-400 text-cyan-300 bg-cyan-900/50` : `border-slate-600 text-slate-500 bg-slate-800`;
+        return `
+          <button data-action="set-subject" data-val="${sub}" class="${baseClass} ${activeClass}">
+            ${sub === 'All' ? '全部科目' : sub}
+            <span class="ml-auto text-[10px] py-1 px-2 font-tech rounded border ${badgeClass}">[${count}]</span>
+          </button>
+        `;
+      }).join('');
+    };
+
+    const getFilteredQuestions = () => {
+      return state.questions.filter(q => {
+        const matchesSubject = state.selectedSubject === 'All' || q.subject === state.selectedSubject;
+        const s = state.searchQuery.toLowerCase();
+        const matchesSearch = !s || (q.questionText || '').toLowerCase().includes(s) || (q.aiAnalysis || '').toLowerCase().includes(s) || (q.knowledgePoints || '').toLowerCase().includes(s);
+        return matchesSubject && matchesSearch;
+      }).sort((a, b) => {
+        const imp = { '高': 3, '中': 2, '低': 1 };
+        const [sortKey, order] = state.sortBy.split('-');
+        const mod = order === 'desc' ? 1 : -1;
+        if (sortKey === 'date') return (new Date(b.date || b.dateAdded).getTime() - new Date(a.date || a.dateAdded).getTime()) * mod;
+        if (sortKey === 'mastery') return ((b.mastery || 0) - (a.mastery || 0)) * mod;
+        if (sortKey === 'importance') return ((imp[b.importance] || 0) - (imp[a.importance] || 0)) * mod;
+        return 0;
+      });
+    };
+
+    const renderQuestions = () => {
+      const filtered = getFilteredQuestions();
+      renderSubjects();
+      
+      if (filtered.length === 0) {
+        els.manage.questionsContainer.classList.add('hidden');
+        els.manage.emptyState.classList.remove('hidden');
+        els.manage.emptyState.innerHTML = `
+          <div class="relative">
+            <div class="w-32 h-32 cyber-card rounded-full flex items-center justify-center relative z-10 border-cyan-500/50 shadow-[0_0_30px_rgba(34,211,238,0.2)]">
+              ${getSvgBrain('w-16 h-16 text-cyan-400')}
+            </div>
+          </div>
+          <div class="text-center">
+            <h3 class="text-cyan-50 text-xl mb-2 font-bold">數據庫為空</h3>
+            <p class="text-cyan-600 text-sm">請建立您的第一筆錯題紀錄。</p>
+          </div>
+          <button data-action="new-question" class="cyber-btn-primary px-8 py-3 rounded-xl">新增紀錄</button>
+        `;
+      } else {
+        els.manage.emptyState.classList.add('hidden');
+        els.manage.questionsContainer.classList.remove('hidden');
+        els.manage.questionsContainer.innerHTML = filtered.map(q => {
+          const impClass = q.importance === '高' ? 'status-red' : q.importance === '中' ? 'status-yellow' : 'status-green';
+          const tags = q.knowledgePoints ? q.knowledgePoints.split(/[,、，]/).filter(t=>t.trim()).map(t => `<span class="text-cyan-500 text-xs flex items-center gap-1 bg-cyan-900/20 px-2 py-0.5 rounded border border-cyan-800"><i data-lucide="lightbulb" class="w-3 h-3"></i> ${t.trim()}</span>`).join('') : '';
+          
+          return `
+          <div class="cyber-card p-6 group flex flex-col h-full rounded-2xl">
+            <div class="flex justify-between items-start mb-4">
+              <div class="flex gap-2 items-center flex-wrap">
+                <span class="cyber-tag px-2.5 py-1 text-xs">${q.subject || '未分類'}</span>
+                <span class="text-cyan-500/60 text-xs flex items-center gap-1 border border-slate-700 bg-slate-900/50 px-2 py-1 rounded">
+                  <i data-lucide="calendar" class="w-3 h-3"></i> ${q.date || new Date(q.dateAdded).toLocaleDateString()}
+                </span>
+              </div>
+              <div class="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity ml-2">
+                <button data-action="edit" data-id="${q.id}" class="p-1.5 text-slate-500 hover:text-cyan-400 hover:bg-cyan-900/30 transition-colors border border-transparent hover:border-cyan-500/30 rounded"><i data-lucide="refresh-cw" class="w-3.5 h-3.5 pointer-events-none"></i></button>
+                <button data-action="delete" data-id="${q.id}" class="p-1.5 text-slate-500 hover:text-rose-400 hover:bg-rose-900/30 transition-colors border border-transparent hover:border-rose-500/30 rounded"><i data-lucide="trash-2" class="w-3.5 h-3.5 pointer-events-none"></i></button>
+              </div>
+            </div>
+            
+            <div class="space-y-4 flex-1 flex flex-col">
+              ${q.imageBase64 ? `<div class="w-full max-h-48 overflow-hidden border border-cyan-500/20 bg-slate-900/50 flex items-center justify-center relative p-1 rounded-lg"><img src="${q.imageBase64}" class="max-w-full max-h-48 object-contain relative z-10 filter invert brightness-90 hue-rotate-180 contrast-125 mix-blend-screen" /></div>` : ''}
+              <div><h3 class="font-bold text-cyan-50 text-base leading-relaxed line-clamp-3">${q.questionText || '無文字敘述'}</h3></div>
+              <div class="flex flex-col gap-2">
+                <div class="flex flex-wrap gap-2">
+                  <span class="flex items-center gap-1 px-2 py-1 text-xs rounded ${impClass}">等級: ${q.importance}</span>
+                  <span class="flex items-center gap-1.5 px-2 py-1 bg-slate-900/80 border border-slate-700 text-xs text-slate-400 rounded">熟練度: <span class="flex gap-0.5">${getStarsHtml(q.mastery)}</span></span>
+                </div>
+                ${tags ? `<div class="flex flex-wrap gap-1.5 mt-1">${tags}</div>` : ''}
+              </div>
+              
+              ${q.errorReason ? `<div class="bg-amber-900/10 p-3 border-l-2 border-amber-500/50 mt-2 rounded-r-lg"><p class="text-xs font-bold text-amber-500 mb-1">錯誤根源分析</p><p class="text-sm text-amber-100/80">${q.errorReason}</p></div>` : ''}
+
+              <div class="mt-auto pt-4 space-y-2">
+                <div class="grid grid-cols-2 gap-3">
+                  <div class="bg-slate-900/50 p-3 border border-slate-700/50 rounded-lg"><p class="text-xs font-bold text-rose-400 mb-1.5">錯誤作答</p><p class="text-sm text-slate-300 line-clamp-2">${q.userAnswer || '無紀錄'}</p></div>
+                  <div class="bg-slate-900/50 p-3 border border-slate-700/50 rounded-lg"><p class="text-xs font-bold text-emerald-400 mb-1.5">正確解答</p><p class="text-sm text-slate-300 line-clamp-2">${q.correctAnswer || '無紀錄'}</p></div>
+                </div>
+
+                ${q.aiAnalysis ? `
+                <button data-action="view-analysis" data-id="${q.id}" class="w-full text-left mt-2 p-3 bg-cyan-900/10 hover:bg-cyan-900/30 border border-cyan-500/20 transition-all group-analysis flex flex-col gap-1.5 rounded-lg">
+                  <div class="flex justify-between items-center w-full">
+                    <span class="text-xs text-cyan-400 font-bold flex items-center gap-1.5"><i data-lucide="brain-circuit" class="w-3.5 h-3.5"></i> 系統分析日誌</span>
+                    <span class="text-[10px] text-cyan-600 bg-cyan-950 px-2 py-0.5 rounded">展開</span>
+                  </div>
+                  <p class="text-sm text-cyan-100/70 line-clamp-1">${q.aiAnalysis}</p>
+                </button>
+                ` : ''}
+                <button data-action="chat" data-id="${q.id}" class="w-full mt-2 py-2.5 cyber-btn text-sm flex items-center justify-center gap-2 rounded-lg"><i data-lucide="terminal" class="w-4 h-4 pointer-events-none"></i> 啟動 AI 家教</button>
+              </div>
+            </div>
+          </div>
+          `;
+        }).join('');
+      }
+      updateIcons();
+    };
+
+    const renderGlobalChat = () => {
+      els.globalChat.history.innerHTML = state.globalMessages.map(msg => `
+        <div class="flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}">
+          <div class="max-w-[85%] px-4 py-3 text-sm leading-relaxed ${msg.role === 'user' ? 'bg-cyan-900/60 border border-cyan-400/50 text-cyan-50 shadow-[0_0_10px_rgba(34,211,238,0.1)] rounded-xl rounded-tr-sm' : 'cyber-card border-l-2 border-l-cyan-400 text-cyan-100 rounded-xl rounded-tl-sm'}">
+            ${msg.text.split('\n').map(line => `<p class="min-h-[1em] whitespace-pre-wrap">${line}</p>`).join('')}
+          </div>
+        </div>
+      `).join('');
+      
+      if(state.isGlobalTyping) {
+        els.globalChat.history.innerHTML += `
+        <div class="flex justify-start">
+          <div class="cyber-card p-3 border-l-2 border-l-cyan-400 flex items-center justify-center rounded-xl rounded-tl-sm">
+            ${getSvgTyping("w-6 h-6 text-cyan-400")}
+          </div>
+        </div>`;
+      }
+      els.globalChat.history.scrollTop = els.globalChat.history.scrollHeight;
+    };
+
+    const renderTutorChat = () => {
+      els.chat.history.innerHTML = state.tutorMessages.map(msg => `
+        <div class="flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}">
+          <div class="max-w-[90%] px-4 py-3 text-sm leading-relaxed ${msg.role === 'user' ? 'bg-cyan-900/40 border border-cyan-500/40 text-cyan-50 rounded-xl rounded-tr-sm' : 'cyber-card border-l-2 border-l-cyan-400 text-cyan-100 rounded-xl rounded-tl-sm'}">
+            ${msg.text.split('\n').map(line => `<p class="min-h-[1em] whitespace-pre-wrap">${line}</p>`).join('')}
+          </div>
+        </div>
+      `).join('');
+      if(state.isTyping) {
+        els.chat.history.innerHTML += `<div class="flex justify-start"><div class="cyber-card p-3 border-l-2 border-l-cyan-400 flex items-center justify-center rounded-xl rounded-tl-sm">${getSvgTyping("w-6 h-6 text-cyan-400")}</div></div>`;
+      }
+      els.chat.history.scrollTop = els.chat.history.scrollHeight;
+    };
+
+    const renderEditor = () => {
+      const fd = state.formData;
+      if (fd.imageBase64) {
+        els.editor.imgContainer.className = "border border-dashed transition-all duration-300 rounded-xl border-cyan-500/40 bg-slate-900 p-2";
+        els.editor.imgContainer.innerHTML = `
+          <div class="relative">
+            <img src="${fd.imageBase64}" class="max-h-64 object-contain filter invert brightness-90 hue-rotate-180 contrast-125 mix-blend-screen rounded" />
+            <div class="absolute top-2 right-2">
+              <button data-action="remove-img" class="bg-slate-900/80 text-rose-500 border border-rose-500/50 p-2 hover:bg-rose-900 hover:text-white transition-all rounded-lg"><i data-lucide="trash-2" class="w-4 h-4 pointer-events-none"></i></button>
+            </div>
+          </div>`;
+      } else {
+        els.editor.imgContainer.className = "border border-dashed transition-all duration-300 rounded-xl border-cyan-800 bg-slate-900/30 hover:bg-slate-900/60 min-h-[160px] flex flex-col items-center justify-center";
+        if (state.isScanning) {
+          els.editor.imgContainer.innerHTML = `<div class="w-full p-6 text-center text-cyan-400 flex flex-col items-center">${getSvgScanner("w-16 h-16 mb-2")}<span class="text-sm font-bold">正在掃描視覺輸入...</span></div>`;
+        } else {
+          els.editor.imgContainer.innerHTML = `
+            <div class="w-full p-6 flex gap-4 justify-center">
+              <button data-action="upload-img" class="cyber-btn flex flex-col items-center justify-center gap-2 p-4 flex-1 max-w-[160px]"><i data-lucide="upload" class="w-6 h-6 pointer-events-none"></i><span class="text-xs pointer-events-none">從相簿選擇</span></button>
+              <button data-action="open-camera" class="cyber-btn flex flex-col items-center justify-center gap-2 p-4 flex-1 max-w-[160px]"><i data-lucide="camera" class="w-6 h-6 pointer-events-none"></i><span class="text-xs pointer-events-none">開啟相機</span></button>
+            </div>`;
+        }
+      }
+      
+      document.getElementById('edit-subject').value = fd.subject || '';
+      document.getElementById('edit-date').value = fd.date || '';
+      document.getElementById('edit-errorReason').value = fd.errorReason || '';
+      document.getElementById('edit-knowledgePoints').value = fd.knowledgePoints || '';
+      document.getElementById('edit-questionText').value = fd.questionText || '';
+      document.getElementById('edit-userAnswer').value = fd.userAnswer || '';
+      document.getElementById('edit-correctAnswer').value = fd.correctAnswer || '';
+      document.getElementById('edit-aiAnalysis').value = fd.aiAnalysis || '';
+
+      document.getElementById('edit-mastery').innerHTML = [1,2,3,4,5].map(star => 
+        `<button data-action="edit-star" data-val="${star}" class="p-1.5 transition-all ${fd.mastery >= star ? 'text-cyan-400 drop-shadow-[0_0_5px_#22d3ee]' : 'text-slate-700 hover:text-cyan-900'}"><i data-lucide="star" class="w-5 h-5 ${fd.mastery >= star ? 'fill-current':''} pointer-events-none"></i></button>`
+      ).join('');
+
+      document.querySelectorAll('.imp-btn').forEach(btn => {
+        btn.className = `imp-btn flex-1 text-sm font-bold transition-all rounded-lg ${fd.importance === btn.dataset.val ? (btn.dataset.val==='高'?'bg-rose-900/50 border border-rose-500 text-rose-400':btn.dataset.val==='中'?'bg-amber-900/50 border border-amber-500 text-amber-400':'bg-emerald-900/50 border border-emerald-500 text-emerald-400') : 'cyber-input text-slate-500 hover:text-cyan-300'}`;
+      });
+
+      const btnAuto = document.getElementById('btn-auto-solve');
+      btnAuto.disabled = state.isAnalyzing;
+      btnAuto.innerHTML = state.isAnalyzing ? `${getSvgTyping("w-3.5 h-3.5")} 自動推導中...` : `<i data-lucide="sparkles" class="w-3.5 h-3.5"></i> ${fd.aiAnalysis ? '重新推導' : '自動推導'}`;
+      
+      updateIcons();
+    };
+
+    const renderQuizSetup = () => {
+      const subs = ['All', ...new Set(state.questions.map(q => q.subject).filter(Boolean))];
+      els.quiz.selectSubject.innerHTML = subs.map(sub => `<option class="bg-slate-900" value="${sub}">${sub === 'All' ? '全部科目' : sub}</option>`).join('');
+      els.quiz.selectSubject.value = state.quizConfig.subject;
+      els.quiz.selectLimit.value = state.quizConfig.limit;
+      els.quiz.inputKeyword.value = state.quizConfig.keyword;
+      
+      els.quiz.masterySelector.innerHTML = [1,2,3,4,5].map(star => 
+        `<button data-action="quiz-mastery" data-val="${star}" class="p-2 transition-all duration-300 hover:scale-110 ${state.quizConfig.maxMastery >= star ? 'text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]' : 'text-slate-700 hover:text-cyan-900'}"><i data-lucide="star" class="w-6 h-6 ${state.quizConfig.maxMastery>=star?'fill-current':''} pointer-events-none"></i></button>`
+      ).join('') + `<span class="ml-4 text-sm font-bold text-cyan-400 border-l border-cyan-800 pl-5 pr-2 py-1">${state.quizConfig.maxMastery} 星以下</span>`;
+
+      const matchCount = state.questions.filter(q => 
+        (state.quizConfig.subject === 'All' || q.subject === state.quizConfig.subject) &&
+        (!state.quizConfig.keyword || (q.questionText||'').toLowerCase().includes(state.quizConfig.keyword.toLowerCase()) || (q.knowledgePoints||'').toLowerCase().includes(state.quizConfig.keyword.toLowerCase())) &&
+        ((q.mastery || 1) <= state.quizConfig.maxMastery)
+      ).length;
+      els.quiz.startText.textContent = `開始測驗 (${matchCount} 題待命)`;
+      updateIcons();
+    };
+
+    const renderQuizActive = () => {
+      const q = state.quizQuestions[state.currentQuizIndex];
+      els.quiz.activeProgress.textContent = `進度: ${state.currentQuizIndex + 1} / ${state.quizQuestions.length}`;
+      els.quiz.activeTags.innerHTML = `<span class="text-cyan-100 bg-slate-800 px-3 py-1 text-sm border border-cyan-900/50 rounded-lg">${q.subject}</span>`;
+      
+      let html = '';
+      if(q.imageBase64) {
+        html += `<div class="w-full max-h-80 overflow-hidden border border-cyan-500/30 bg-slate-900/80 flex items-center justify-center relative p-2 rounded-xl"><div class="absolute inset-0 bg-[linear-gradient(rgba(34,211,238,0.05)_1px,transparent_1px)] bg-[length:10px_10px] pointer-events-none"></div><img src="${q.imageBase64}" class="max-w-full max-h-72 object-contain relative z-10 filter invert brightness-90 hue-rotate-180 contrast-125" /></div>`;
+      }
+      html += `<h3 class="text-lg md:text-xl font-bold text-cyan-50 leading-relaxed whitespace-pre-wrap">${q.questionText || '無文字敘述'}</h3>`;
+      if(q.knowledgePoints) {
+         html += `<div class="flex flex-wrap gap-2 mt-1">` + q.knowledgePoints.split(/[,、，]/).filter(t=>t.trim()).map(t => `<span class="cyber-tag px-2.5 py-1 text-xs flex items-center gap-1.5"><i data-lucide="lightbulb" class="w-3.5 h-3.5"></i> ${t.trim()}</span>`).join('') + `</div>`;
+      }
+      
+      html += `
+        <div class="pt-4 flex-1 flex flex-col">
+          <label class="text-sm font-bold text-cyan-400 flex items-center gap-2 mb-2"><i data-lucide="target" class="w-4 h-4"></i> 輸入解答推導</label>
+          <textarea id="quiz-answer-input" class="flex-1 w-full p-5 cyber-input min-h-[160px] resize-y text-base" placeholder="請輸入您的計算過程或答案..." ${state.isQuizAnswerRevealed || state.isEvaluatingQuiz ? 'disabled style="opacity:0.5"' : ''}>${state.currentQuizAnswer}</textarea>
+        </div>`;
+
+      if(!state.isQuizAnswerRevealed) {
+         html += `<button id="btn-quiz-submit" class="mt-4 w-full py-4 cyber-btn-primary flex items-center justify-center gap-3 rounded-xl text-lg ${state.isEvaluatingQuiz?'opacity-80 cursor-wait':''}" ${state.isEvaluatingQuiz?'disabled':''}>
+            ${state.isEvaluatingQuiz ? `${getSvgTyping("w-6 h-6")} 數據分析中...` : `<i data-lucide="check-circle-2" class="w-5 h-5 pointer-events-none"></i> 提交系統評估`}
+         </button>`;
+      } else {
+         let evalHtml = '';
+         if(state.quizEvaluation) {
+            const ev = state.quizEvaluation;
+            const cls = ev.status === '正確' ? 'status-green' : ev.status === '部分正確' ? 'status-yellow' : 'status-red';
+            const icon = ev.status === '正確' ? 'check-circle-2' : ev.status === '部分正確' ? 'alert-triangle' : 'x-circle';
+            evalHtml = `
+              <div class="p-5 border flex gap-5 items-start relative overflow-hidden rounded-xl ${cls}">
+                <div class="p-2 shrink-0 z-10 bg-black/20 rounded-lg"><i data-lucide="${icon}" class="w-8 h-8"></i></div>
+                <div class="z-10 pt-1"><h4 class="font-bold text-lg mb-1">${ev.status}</h4><p class="text-sm opacity-90 leading-relaxed">${ev.feedback}</p></div>
+              </div>`;
+         }
+
+         html += `
+         <div class="space-y-7 mt-6 animate-in fade-in slide-in-from-bottom-8 duration-700 pt-8 border-t border-cyan-500/30 border-dashed">
+            ${evalHtml}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div class="bg-emerald-900/20 p-5 border border-emerald-500/30 rounded-xl">
+                <p class="text-sm font-bold text-emerald-400 mb-3 flex items-center gap-2"><i data-lucide="check-circle-2" class="w-4 h-4"></i> 正確解答</p>
+                <p class="text-cyan-50 text-base whitespace-pre-wrap leading-relaxed">${q.correctAnswer || '未提供'}</p>
+              </div>
+              <div class="bg-rose-900/20 p-5 border border-rose-500/30 rounded-xl">
+                <p class="text-sm font-bold text-rose-400 mb-3 flex items-center gap-2"><i data-lucide="x-circle" class="w-4 h-4"></i> 歷史錯誤紀錄</p>
+                <p class="text-cyan-50 text-base whitespace-pre-wrap leading-relaxed">${q.userAnswer || '無紀錄'}</p>
+                ${q.errorReason ? `<div class="mt-4 pt-3 border-t border-rose-500/30"><span class="text-xs text-rose-500 font-bold">錯誤源</span><p class="text-sm text-rose-300 mt-1">${q.errorReason}</p></div>` : ''}
+              </div>
+            </div>
+            ${q.aiAnalysis ? `
+            <div class="bg-cyan-900/20 p-5 border border-cyan-500/30 relative overflow-hidden rounded-xl">
+              <p class="text-sm font-bold text-cyan-400 mb-3 flex items-center gap-2"><i data-lucide="brain-circuit" class="w-4 h-4"></i> AI 分析日誌</p>
+              <p class="text-cyan-100 text-sm leading-relaxed whitespace-pre-wrap">${q.aiAnalysis}</p>
+            </div>` : ''}
+            <div class="cyber-glass p-5 border border-cyan-500/40 flex flex-col md:flex-row items-center justify-between gap-5 mt-6 rounded-xl">
+              <div class="text-center md:text-left"><p class="font-bold text-base text-cyan-300 mb-1">更新熟練度</p><p class="text-xs text-cyan-600/80">請根據作答情況調整此題目的熟練度。</p></div>
+              <div class="flex gap-2 bg-slate-900/80 px-4 py-2 border border-cyan-900/50 rounded-xl">
+                 ${getStarsHtml(q.mastery, true, q.id)}
+              </div>
+            </div>
+            <button id="btn-quiz-next" class="w-full mt-2 py-4 cyber-btn text-lg rounded-xl">${state.currentQuizIndex < state.quizQuestions.length - 1 ? '進入下一題' : '查看測驗報告'} <i data-lucide="arrow-right" class="w-5 h-5 ml-2 inline"></i></button>
+         </div>`;
+      }
+      
+      els.quiz.activeContent.innerHTML = html;
+      updateIcons();
+
+      // Attach dynamic listeners for quiz active
+      const ansInput = document.getElementById('quiz-answer-input');
+      if(ansInput) {
+        ansInput.addEventListener('input', e => state.currentQuizAnswer = e.target.value);
+      }
+      const submitBtn = document.getElementById('btn-quiz-submit');
+      if(submitBtn) submitBtn.addEventListener('click', handleCheckQuizAnswer);
+      const nextBtn = document.getElementById('btn-quiz-next');
+      if(nextBtn) nextBtn.addEventListener('click', handleNextQuizQuestion);
+    };
+
+    const renderSettings = () => {
+      els.settings.presets.innerHTML = themePresets.map((p, i) => `
+        <button data-action="set-theme" data-val="${i}" class="px-4 py-3 border text-sm transition-all flex items-center justify-between rounded-xl ${state.bgSettings.name === p.name ? 'border-cyan-400 bg-cyan-900/30 text-cyan-300 shadow-[0_0_10px_rgba(34,211,238,0.2)]' : 'border-slate-700 bg-slate-900 text-slate-400 hover:border-cyan-500/50 hover:text-cyan-200'}">
+          <span class="font-medium pointer-events-none">${p.name}</span>
+          ${state.bgSettings.name === p.name ? '<span class="text-xs text-cyan-500 font-bold pointer-events-none">[ 啟用中 ]</span>' : ''}
+        </button>
+      `).join('');
+      
+      // 載入目前設定的 API Key 與 AI Model
+      document.getElementById('setting-api-key').value = state.apiKey;
+      document.getElementById('setting-api-model').value = state.apiModel || "gemini-2.5-flash";
+
+      // 載入自訂背景網址
+      const urlInput = document.getElementById('setting-custom-bg-url');
+      if(state.bgSettings.type === 'image') {
+          urlInput.value = state.bgSettings.value;
+      } else {
+          urlInput.value = '';
+      }
+    };
+
+    // --- Actions ---
+    const handleExportJSON = () => {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state.questions, null, 2));
+      const downloadAnchorNode = document.createElement('a');
+      downloadAnchorNode.setAttribute("href",     dataStr);
+      downloadAnchorNode.setAttribute("download", "tech_mistakes_export.json");
+      document.body.appendChild(downloadAnchorNode);
+      downloadAnchorNode.click();
+      downloadAnchorNode.remove();
+    };
+
+    const handleImportJSON = (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const imported = JSON.parse(event.target.result);
+          if (Array.isArray(imported)) {
+            state.questions = imported;
+            saveData();
+            renderQuestions();
+            showToast('系統提示：備份數據庫載入成功！');
+          } else {
+            showToast('錯誤：資料格式異常，必須為陣列。');
+          }
+        } catch (err) {
+          showToast('錯誤：解析數據檔案失敗。');
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = null;
+    };
+
+    const handleCheckQuizAnswer = async () => {
+      if (!state.currentQuizAnswer.trim()) {
+        if(confirm('提示：未檢測到解答輸入。確定要直接查看正確解答嗎？')) {
+          state.isQuizAnswerRevealed = true;
+          renderQuizActive();
+        }
+        return;
+      }
+      state.isEvaluatingQuiz = true;
+      renderQuizActive();
+      try {
+        const q = state.quizQuestions[state.currentQuizIndex];
+        const prompt = `你是精準的 AI 批改系統。\n【題目】：${q.questionText}\n【標準答案】：${q.correctAnswer}\n【用戶作答】：${state.currentQuizAnswer}\n請以 JSON 格式回傳，格式如下：\n{ "status": "正確" | "部分正確" | "錯誤", "feedback": "精簡的一句評語（限30字內，保持專業語氣）" }`;
+        const evalResult = await callGeminiAPI(prompt, q.imageBase64, true);
+        if (evalResult && evalResult.status) state.quizEvaluation = evalResult;
+      } catch (e) {
+        showToast('批改發生錯誤：' + e.message);
+      } finally {
+        state.isEvaluatingQuiz = false;
+        state.isQuizAnswerRevealed = true;
+        renderQuizActive();
+      }
+    };
+
+    const handleNextQuizQuestion = () => {
+      if (state.currentQuizIndex < state.quizQuestions.length - 1) {
+        state.currentQuizIndex++;
+        state.isQuizAnswerRevealed = false;
+        state.currentQuizAnswer = '';
+        state.quizEvaluation = null;
+        renderQuizActive();
+      } else {
+        switchView('quiz_summary');
+      }
+    };
+
+    const openEditor = (q = null) => {
+      state.editingQuestion = q;
+      state.formData = q ? { ...q } : {
+        subject: '', date: new Date().toISOString().split('T')[0], errorReason: '', knowledgePoints: '',
+        importance: '中', mastery: 1, questionText: '', imageBase64: '', userAnswer: '', correctAnswer: '', aiAnalysis: ''
+      };
+      els.editor.title.innerHTML = q ? `<i data-lucide="refresh-cw" class="w-5 h-5 text-cyan-400"></i> 編輯錯題紀錄` : `<i data-lucide="plus" class="w-5 h-5 text-cyan-400"></i> 新增錯題紀錄`;
+      els.editor.modal.classList.remove('hidden');
+      renderEditor();
+    };
+
+    const saveEditor = async () => {
+      // Gather form data
+      const fd = state.formData;
+      fd.subject = document.getElementById('edit-subject').value;
+      fd.date = document.getElementById('edit-date').value;
+      fd.errorReason = document.getElementById('edit-errorReason').value;
+      fd.knowledgePoints = document.getElementById('edit-knowledgePoints').value;
+      fd.questionText = document.getElementById('edit-questionText').value;
+      fd.userAnswer = document.getElementById('edit-userAnswer').value;
+      fd.correctAnswer = document.getElementById('edit-correctAnswer').value;
+      fd.aiAnalysis = document.getElementById('edit-aiAnalysis').value;
+
+      const qid = fd.id || Date.now().toString();
+      const newQuestion = { ...fd, id: qid, dateAdded: fd.dateAdded || new Date().toISOString() };
+      
+      const idx = state.questions.findIndex(q => q.id === qid);
+      if (idx >= 0) {
+        state.questions[idx] = newQuestion;
+      } else {
+        state.questions.push(newQuestion);
+      }
+
+      saveData();
+      els.editor.modal.classList.add('hidden');
+      renderQuestions();
+      showToast("系統提示：錯題數據已記錄。");
+    };
+
+    const processImage = async (base64) => {
+      state.formData.imageBase64 = base64;
+      state.isScanning = true;
+      renderEditor();
+      try {
+        const prompt = `請分析這張考試題目的圖片。1. 提取圖片中的「所有題目文字」。2. 判斷這道題目的「科目」(限10字)。3. 判斷「重要知識點」(逗號分隔，限3個)。請回傳JSON: { "questionText": "", "subject": "", "knowledgePoints": "" }`;
+        const res = await callGeminiAPI(prompt, base64, true);
+        if (res) {
+          state.formData = { ...state.formData, ...res };
+        }
+      } catch (e) {
+        showToast("視覺擷取失敗：" + e.message);
+      } finally {
+        state.isScanning = false;
+        renderEditor();
+      }
+    };
+
+    // --- Global Event Listeners ---
+    document.addEventListener('click', async e => {
+      const btn = e.target.closest('[data-action]');
+      if (!btn) return;
+      const action = btn.dataset.action;
+      const id = btn.dataset.id;
+      const val = btn.dataset.val;
+
+      // Navigation & Sidebar
+      if (action === 'set-subject') { state.selectedSubject = val; renderQuestions(); toggleSidebar(true); }
+      if (action === 'new-question') { openEditor(); }
+      
+      // Question Card
+      if (action === 'edit') openEditor(state.questions.find(q => q.id === id));
+      if (action === 'delete') {
+        if(confirm('警告：確定要永久刪除這筆錯題數據嗎？')) {
+          state.questions = state.questions.filter(q => q.id !== id);
+          saveData();
+          renderQuestions();
+          showToast("系統提示：數據已刪除。");
+        }
+      }
+      if (action === 'view-analysis') {
+         // Create simple modal for analysis
+         const q = state.questions.find(q=>q.id===id);
+         const div = document.createElement('div');
+         div.className = "fixed inset-0 z-[100] bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4";
+         div.innerHTML = `
+           <div class="cyber-card w-full max-w-2xl max-h-[85vh] flex flex-col animate-in fade-in zoom-in-95 duration-200 border-cyan-400 shadow-[0_0_30px_rgba(34,211,238,0.15)] rounded-2xl">
+             <div class="px-6 py-4 border-b border-cyan-500/30 flex justify-between items-center bg-cyan-950/50">
+               <h3 class="font-bold text-cyan-300 text-base flex items-center gap-3"><i data-lucide="brain-circuit" class="w-5 h-5"></i> 分析日誌詳情</h3>
+               <button class="close-analysis text-cyan-500 hover:text-cyan-300 p-1"><i data-lucide="x" class="w-5 h-5 pointer-events-none"></i></button>
+             </div>
+             <div class="p-6 overflow-y-auto flex-1 custom-scrollbar"><div class="text-base text-cyan-50 leading-relaxed whitespace-pre-wrap">${q.aiAnalysis}</div></div>
+             <div class="p-4 border-t border-cyan-500/30 bg-slate-900 flex justify-end"><button class="close-analysis cyber-btn px-6 py-2 text-sm rounded-lg">關閉</button></div>
+           </div>`;
+         document.body.appendChild(div);
+         updateIcons();
+         div.querySelectorAll('.close-analysis').forEach(b => b.onclick = () => div.remove());
+      }
+      if (action === 'chat') {
+        state.currentChatContext = state.questions.find(q => q.id === id);
+        state.tutorMessages = [{ role: 'ai', text: `您好，我是負責此題目的 AI 學習助理。請隨時向我提問，我會為您提供詳細的觀念解析。` }];
+        els.chat.contextText.textContent = state.currentChatContext.questionText || '圖片數據';
+        els.chat.modal.classList.remove('hidden');
+        setTimeout(() => els.chat.panel.classList.remove('translate-x-full'), 10);
+        renderTutorChat();
+      }
+
+      // Editor Modal
+      if (action === 'upload-img') els.editor.fileInput.click();
+      if (action === 'open-camera') {
+         els.camera.modal.classList.remove('hidden');
+         startCamera();
+      }
+      if (action === 'remove-img') { state.formData.imageBase64 = ''; renderEditor(); }
+      if (action === 'edit-star') { state.formData.mastery = parseInt(val); renderEditor(); }
+
+      // Quiz Active
+      if (action === 'update-star') {
+         const newM = parseInt(val);
+         state.quizQuestions = state.quizQuestions.map(q => q.id === id ? { ...q, mastery: newM } : q);
+         
+         const qIdx = state.questions.findIndex(q => q.id === id);
+         if (qIdx >= 0) {
+           state.questions[qIdx].mastery = newM;
+           saveData();
+         }
+         
+         renderQuizActive();
+      }
+
+      // Quiz Setup
+      if (action === 'quiz-mastery') {
+         state.quizConfig.maxMastery = parseInt(val);
+         renderQuizSetup();
+      }
+
+      // Settings
+      if (action === 'set-theme') {
+         state.bgSettings = themePresets[parseInt(val)];
+         applyTheme();
+         renderSettings();
+      }
+    });
+
+    // Form Event Listeners
+    els.manage.searchInput.addEventListener('input', e => { state.searchQuery = e.target.value; renderQuestions(); });
+    els.manage.sortSelect.addEventListener('change', e => { state.sortBy = e.target.value; renderQuestions(); });
+    
+    document.querySelectorAll('.mode-switch').forEach(btn => {
+      btn.addEventListener('click', () => switchView(btn.dataset.mode));
+    });
+
+    document.getElementById('btn-open-sidebar').addEventListener('click', () => toggleSidebar());
+    document.getElementById('btn-close-sidebar').addEventListener('click', () => toggleSidebar(true));
+    els.backdrop.addEventListener('click', () => toggleSidebar(true));
+
+    document.getElementById('btn-add-question').addEventListener('click', () => openEditor());
+    document.getElementById('btn-close-editor').addEventListener('click', () => els.editor.modal.classList.add('hidden'));
+    document.getElementById('btn-cancel-editor').addEventListener('click', () => els.editor.modal.classList.add('hidden'));
+    document.getElementById('btn-save-editor').addEventListener('click', saveEditor);
+
+    document.getElementById('btn-open-settings').addEventListener('click', () => { els.settings.modal.classList.remove('hidden'); renderSettings(); toggleSidebar(true); });
+    document.getElementById('btn-close-settings').addEventListener('click', () => els.settings.modal.classList.add('hidden'));
+    
+    // Apply custom background image URL
+    document.getElementById('btn-apply-custom-bg').addEventListener('click', () => {
+      const url = document.getElementById('setting-custom-bg-url').value.trim();
+      if(url) {
+         state.bgSettings = { name: '自訂圖片', type: 'image', value: url };
+         applyTheme();
+         renderSettings();
+         showToast("已成功套用自訂環境背景！");
+      } else {
+         showToast("請先輸入有效的圖片網址。");
+      }
+    });
+
+    document.getElementById('btn-apply-settings').addEventListener('click', () => {
+      // 儲存 API Key 到本地端
+      const newKey = document.getElementById('setting-api-key').value.trim();
+      state.apiKey = newKey;
+      localStorage.setItem('smart-mistakes-apikey', newKey);
+
+      // 儲存選擇的模型到本地端
+      const newModel = document.getElementById('setting-api-model').value;
+      state.apiModel = newModel;
+      localStorage.setItem('smart-mistakes-model', newModel);
+
+      // 將背景設定儲存到本地端
+      localStorage.setItem('smart-mistakes-bg', JSON.stringify(state.bgSettings));
+      
+      els.settings.modal.classList.add('hidden');
+      showToast("系統提示：設定儲存成功。");
+    });
+
+    // Camera
+    let camStream = null;
+    const startCamera = async () => {
+      if(camStream) camStream.getTracks().forEach(t=>t.stop());
+      try {
+        camStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: state.facingMode, width: { ideal: 1920 } } });
+        els.camera.video.srcObject = camStream;
+      } catch(e) {
+        showToast("錯誤：無法存取相機。");
+        els.camera.modal.classList.add('hidden');
+      }
+    };
+    document.getElementById('btn-close-camera').addEventListener('click', () => {
+       if(camStream) camStream.getTracks().forEach(t=>t.stop());
+       els.camera.modal.classList.add('hidden');
+    });
+    document.getElementById('btn-switch-camera').addEventListener('click', () => {
+       state.facingMode = state.facingMode === 'environment' ? 'user' : 'environment';
+       startCamera();
+    });
+    document.getElementById('btn-capture-camera').addEventListener('click', () => {
+       if(!els.camera.video) return;
+       const canvas = document.createElement('canvas');
+       canvas.width = els.camera.video.videoWidth; canvas.height = els.camera.video.videoHeight;
+       canvas.getContext('2d').drawImage(els.camera.video, 0, 0);
+       const base64 = canvas.toDataURL('image/jpeg', 0.85);
+       if(camStream) camStream.getTracks().forEach(t=>t.stop());
+       els.camera.modal.classList.add('hidden');
+       processImage(base64);
+    });
+
+    els.editor.fileInput.addEventListener('change', handleImageUpload => {
+      const file = els.editor.fileInput.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = e => processImage(e.target.result);
+      reader.readAsDataURL(file);
+    });
+
+    // Auto Analyze in Editor
+    document.getElementById('modal-editor').addEventListener('click', async e => {
+      const btn = e.target.closest('#btn-auto-solve');
+      if(!btn || state.isAnalyzing) return;
+      
+      // sync current values
+      state.formData.questionText = document.getElementById('edit-questionText').value;
+      state.formData.correctAnswer = document.getElementById('edit-correctAnswer').value;
+      state.formData.subject = document.getElementById('edit-subject').value;
+
+      if(!state.formData.questionText && !state.formData.imageBase64) {
+        showToast("錯誤：請先提供題目數據。"); return;
+      }
+      state.isAnalyzing = true;
+      renderEditor();
+      try {
+        const prompt = `這是一道【${state.formData.subject||'未知'}】的題目。題目內容：${state.formData.questionText}。正確答案：${state.formData.correctAnswer||'未提供'}。請精簡給出解題思路與步驟。繁體中文。`;
+        const res = await callGeminiAPI(prompt, state.formData.imageBase64, false);
+        if(res) state.formData.aiAnalysis = res;
+      } catch(e) {
+        showToast("AI 推導失敗：" + e.message);
+      } finally {
+        state.isAnalyzing = false;
+        renderEditor();
+      }
+    });
+
+    // Editor Importance buttons handling
+    document.getElementById('modal-editor').addEventListener('click', e => {
+       if(e.target.classList.contains('imp-btn')){
+         state.formData.importance = e.target.dataset.val;
+         renderEditor();
+       }
+    });
+
+    // Quiz Listeners
+    document.getElementById('quiz-select-subject').addEventListener('change', e => state.quizConfig.subject = e.target.value);
+    document.getElementById('quiz-select-limit').addEventListener('change', e => state.quizConfig.limit = parseInt(e.target.value));
+    document.getElementById('quiz-input-keyword').addEventListener('input', e => state.quizConfig.keyword = e.target.value);
+    document.getElementById('btn-start-quiz').addEventListener('click', () => {
+      let pool = state.questions.filter(q => {
+        const mSub = state.quizConfig.subject === 'All' || q.subject === state.quizConfig.subject;
+        const kw = state.quizConfig.keyword.toLowerCase();
+        const mKey = !kw || (q.questionText||'').toLowerCase().includes(kw) || (q.knowledgePoints||'').toLowerCase().includes(kw);
+        return mSub && mKey && ((q.mastery||1) <= state.quizConfig.maxMastery);
+      });
+      if(pool.length === 0) return showToast('提示：無符合條件的數據。');
+      state.quizQuestions = pool.sort(()=>0.5-Math.random()).slice(0, state.quizConfig.limit);
+      state.currentQuizIndex = 0; state.isQuizAnswerRevealed = false; state.currentQuizAnswer = ''; state.quizEvaluation = null;
+      switchView('quiz_active');
+      renderQuizActive();
+    });
+    document.getElementById('btn-abort-quiz').addEventListener('click', () => {
+      if(confirm('確定要提前結束測驗嗎？')) switchView('manage');
+    });
+    document.getElementById('btn-end-quiz').addEventListener('click', () => switchView('manage'));
+
+    // Export/Import
+    document.getElementById('btn-export').addEventListener('click', handleExportJSON);
+    document.getElementById('input-import').addEventListener('change', handleImportJSON);
+
+    // Chat Panel
+    document.getElementById('btn-close-chat').addEventListener('click', () => {
+      els.chat.panel.classList.add('translate-x-full');
+      setTimeout(() => els.chat.modal.classList.add('hidden'), 300);
+    });
+
+    const sendTutorChat = async () => {
+      const val = els.chat.input.value.trim();
+      if(!val || state.isTyping) return;
+      state.tutorMessages.push({role: 'user', text: val});
+      els.chat.input.value = ''; state.isTyping = true;
+      renderTutorChat();
+      try {
+        const ctx = state.currentChatContext;
+        const sys = `你是一個專業AI家教。\nSubject: ${ctx.subject}\nQuestion: ${ctx.questionText}\nSysAns: ${ctx.correctAnswer}\nLog: ${ctx.aiAnalysis}\n要求：專業清晰解答，繁體中文。`;
+        const hist = state.tutorMessages.map(m=>`${m.role==='ai'?'系統':'用戶'}: ${m.text}`).join('\n');
+        const res = await callGeminiAPI(`${hist}\n系統:`, ctx.imageBase64, false, sys);
+        state.tutorMessages.push({role:'ai', text: res || '錯誤。'});
+      } catch(e) { 
+        state.tutorMessages.push({role:'ai', text: `系統異常：${e.message}`}); 
+      }
+      state.isTyping = false; renderTutorChat();
+    };
+    document.getElementById('btn-send-tutor-chat').addEventListener('click', sendTutorChat);
+    els.chat.input.addEventListener('keydown', e => { if(e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendTutorChat(); }});
+
+    const sendGlobalChat = async () => {
+      const val = els.globalChat.input.value.trim();
+      if(!val || state.isGlobalTyping) return;
+      state.globalMessages.push({role: 'user', text: val});
+      els.globalChat.input.value = ''; state.isGlobalTyping = true;
+      renderGlobalChat();
+      try {
+        const sys = "你是一個高智能現代化教育助理(AI)。簡潔有力，專業科技感，繁體中文。";
+        const hist = state.globalMessages.map(m=>`${m.role==='ai'?'系統':'用戶'}: ${m.text}`).join('\n');
+        const res = await callGeminiAPI(`${hist}\n系統:`, null, false, sys);
+        state.globalMessages.push({role:'ai', text: res || '錯誤。'});
+      } catch(e) { 
+        state.globalMessages.push({role:'ai', text: `系統無響應。詳細原因：${e.message}`}); 
+      }
+      state.isGlobalTyping = false; renderGlobalChat();
+    };
+    document.getElementById('btn-send-global-chat').addEventListener('click', sendGlobalChat);
+    els.globalChat.input.addEventListener('keydown', e => { if(e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendGlobalChat(); }});
+
+    // --- Init ---
+    applyTheme();
+    updateIcons();
+    renderGlobalChat();
+    renderQuestions();
+
+  </script>
+</body>
+</html>
